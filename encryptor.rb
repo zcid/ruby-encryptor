@@ -1,6 +1,10 @@
 class Encryptor
+  def supported_chars
+    (' '..'z').to_a
+  end
+
   def encrypt_letter(letter, rotation)
-    table = Hash[(' '..'z').to_a.zip((' '..'z').to_a.rotate(rotation))]
+    table = Hash[supported_chars.zip(supported_chars.rotate(rotation))]
 
     if letter == "\n"
       return "\n"
@@ -43,6 +47,17 @@ class Encryptor
     file_name = file_name.gsub("encrypted", "decrypted")
     file = File.open(file_name, "w")
     file.write(new_file_text)
+    file.close
+  end
+
+  def crack_file(file_name)
+    file = File.open(file_name, "r")
+    
+    supported_chars.size.times do |i|
+      file.rewind
+      puts decrypt(file.read, i)
+    end
+
     file.close
   end
 end
