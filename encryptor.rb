@@ -52,12 +52,30 @@ class Encryptor
 
   def crack_file(file_name)
     file = File.open(file_name, "r")
+    out_file = File.open(file_name.gsub("encrypted", "decrypted"), "w")
     
     supported_chars.size.times do |i|
       file.rewind
-      puts decrypt(file.read, i)
+      out_file.write(decrypt(file.read, i))
     end
 
     file.close
+    out_file.close
+  end
+
+  def encrypt_text
+    print "What rotation would you like to use? "
+    rotation = gets.to_i
+
+    puts "Type your text:"
+    encrypt(gets.chomp, rotation)
+  end
+
+  def decrypt_text
+    print "What rotation is the text encrypted with? "
+    rotation = gets.to_i
+
+    puts "Type your encrypted text:"
+    decrypt(gets.chomp, rotation)
   end
 end
